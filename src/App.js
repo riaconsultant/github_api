@@ -11,6 +11,9 @@ class App extends Component {
     name:"Manoj",
     userInfo:[{
       
+    }],
+    repoInfo:[{
+
     }]
   }
   fetchData = (userData) =>{
@@ -24,6 +27,7 @@ class App extends Component {
     }
   }
   getRepo = (repoData) =>{
+    this.setState({repoInfo:repoData})
     console.log(repoData);
   }
   render() {
@@ -35,6 +39,7 @@ class App extends Component {
         <div className="App-body">
           <SearchBox onSubmit={this.fetchData}/><br/>
           <SearchResult userInfo={this.state.userInfo} getReposEvt={this.getRepo}/>
+          <RepositoryList repoInfo={this.state.repoInfo}/>
         </div>
       </div>
     );
@@ -69,12 +74,20 @@ class SearchResult extends Component{
     super(props)
     //console.log(props);
   }
+  getSelection=(url)=>{
+    console.log(url);
+     axios.get(url)
+      .then(repos=>{
+        //console.log(repos.data);
+        this.props.getReposEvt(repos.data)
+      })
+  }
   render(){
     //let userInfo = this.props.userInfo |[];
     return(
       <div className="resultPanel">
         <div className="resultHeader">Result</div>
-        {this.props.userInfo.map((user,index) => <UserProfile key={index} {...user} />)}
+        {this.props.userInfo.map((user,index) => <UserProfile key={index} {...user} getSelect={this.getSelection}/>)}
       </div>
     );
   }
@@ -85,12 +98,8 @@ class UserProfile extends Component{
     super(props);
   }
   getRepo=()=>{
-    console.log(this.props.repos_url);
-    axios.get(this.props.repos_url)
-      .then(repos=>{
-        //console.log(repos.data);
-        this.parent.props.getReposEvt(repos.data)
-      })
+    this.props.getSelect(this.props.repos_url);
+   
   }
   render(){
     return(
@@ -100,36 +109,44 @@ class UserProfile extends Component{
           <div>{this.props.login}</div>
           <a href={this.props.html_url} target="_blank">Profile</a>
         </div>
-
       </div>
     );
   }
 }
 // List of Repositories
 class RepositoryList extends Component{
-  constructor(){
-    super();
-    
+  constructor(props){
+    super(props);
   }
   render(){
+    //let repoInfo = this.state
     return(
       <div className="contain">
-        <h3> Repositories List</h3>
-        <Repository/>
+        <h3> Repositories List </h3>
+        {this.props.repoInfo.map((repos,index) =>(<Repository key={index} {...repos} />))}
       </div>
     );
   }
 }
+
 class Repository extends Component{
+  state={langData:[]}
   constructor(){
     super();
-    
+  }
+  getLanguage(){
+    axios.get(this.props.languages_url)
+      .then(langData =>{
+        this.setState({langData:langData});
+      })
+    //console.log(this.props.languages_url);
   }
   render(){
     return(
       <div>
-        <div>repo name</div>
-        <LanguageBox/>
+        <div>{this.props.name}</div>
+        <div></div>
+        <LanguageBox detail={this.state.langData} />
       </div>
     );
   }
@@ -145,10 +162,10 @@ class LanguageBox extends Component{
   }
   render(){
     return(
-      <ul>
-        <li> Language Name - 10%</li>
-        <li> JavaScript - 1.8%</li>
-      </ul>
+      {this.props.detail.map((language,index) =>(
+        
+      
+      ))}
     );
   }
 }
