@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
+//import './App.css';
+import 'react-bootstrap';
 var axios = require('axios');
 
 class App extends Component {
@@ -32,11 +33,11 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <div className="App-title">Github API Application - Developed By - {this.state.name}</div>
+      <div>
+        <div className="jumbotron text-center">
+            <div className="App-title">Github API Application - Developed By - {this.state.name}</div>
         </div>
-        <div className="App-body">
+        <div className="container">
           <SearchBox onSubmit={this.fetchData}/><br/>
           <SearchResult userInfo={this.state.userInfo} getReposEvt={this.getRepo}/>
           <RepositoryList repoInfo={this.state.repoInfo}/>
@@ -60,11 +61,21 @@ class SearchBox extends Component{
   
   render(){
     return(
-      <form onSubmit={this.searchUser}>
-        <input type="text" value={this.state.username}
-        onChange={(event)=> this.setState({username:event.target.value})} placeholder="Enter the github user name." required/>
-        <button type="submit">Search</button>
+      <form onSubmit={this.searchUser} className="form-horizontal">
+        <div class="form-group">
+          <label for="pName" class="control-label col-sm-2">Github Profile Name:</label>
+          <div class="col-sm-10">
+            <input id="pName" type="text" value={this.state.username}
+            onChange={(event)=> this.setState({username:event.target.value})} placeholder="Enter the github user name." required className="form-control"/>
+          </div>
+        </div>
+        <div className="form-group">
+          <div className="col-sm-offset-2 col-sm-10 ">
+            <button type="submit" className="btn btn-primary">Search</button>
+          </div>
+        </div>
       </form>
+      
     );
   }
 }
@@ -85,9 +96,11 @@ class SearchResult extends Component{
   render(){
     //let userInfo = this.props.userInfo |[];
     return(
-      <div className="resultPanel">
-        <div className="resultHeader">Result</div>
+      <div className="panel panel-default">
+        <div className="panel-heading">Result</div>
+        <div className="panel-body">
         {this.props.userInfo.map((user,index) => <UserProfile key={index} {...user} getSelect={this.getSelection}/>)}
+        </div>
       </div>
     );
   }
@@ -146,7 +159,7 @@ class Repository extends Component{
       <div>
         <div>{this.props.name}</div>
         <div></div>
-        <LanguageBox detail={this.state.langData} />
+        
       </div>
     );
   }
@@ -162,10 +175,7 @@ class LanguageBox extends Component{
   }
   render(){
     return(
-      {this.props.detail.map((language,index) =>(
-        
-      
-      ))}
+      <div></div>
     );
   }
 }
