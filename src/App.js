@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import './App.css';
+import './App.css';
 import 'react-bootstrap';
 var axios = require('axios');
 
@@ -53,7 +53,9 @@ class SearchBox extends Component{
   searchUser = (event) =>{
     event.preventDefault();
     console.log(this.state.username);
-    axios.get(`https://api.github.com/search/users?q=${this.state.username}`)
+    //let url=`https://api.github.com/search/users?q=${this.state.username}`;
+    let url="data/users.json";
+    axios.get(url)
       .then(resp =>{
         this.props.onSubmit(resp.data);
       })
@@ -99,7 +101,10 @@ class SearchResult extends Component{
       <div className="panel panel-default">
         <div className="panel-heading">Result</div>
         <div className="panel-body">
-        {this.props.userInfo.map((user,index) => <UserProfile key={index} {...user} getSelect={this.getSelection}/>)}
+        {this.props.userInfo.map((user,index) => 
+        
+          <UserProfile key={index} {...user} getSelect={this.getSelection}/>
+        )}
         </div>
       </div>
     );
@@ -111,18 +116,21 @@ class UserProfile extends Component{
     super(props);
   }
   getRepo=()=>{
-    this.props.getSelect(this.props.repos_url);
+    //let repo_url=this.props.repos_url;
+    let repo_url="data/repo.json";
+    this.props.getSelect(repo_url);
    
   }
   render(){
     return(
-      <div className="usrprofile" onClick={this.getRepo}>
-        <img src={this.props.avatar_url} width="100px"/>
+      <a href="#" className="list-group-item" onClick={this.getRepo}>
+        <img src={this.props.avatar_url1} width="100px"/>
         <div className="box">
-          <div>{this.props.login}</div>
+          <span>{this.props.login}</span> - <span>{this.props.id}</span><br/>
           <a href={this.props.html_url} target="_blank">Profile</a>
+          
         </div>
-      </div>
+      </a>
     );
   }
 }
@@ -134,9 +142,15 @@ class RepositoryList extends Component{
   render(){
     //let repoInfo = this.state
     return(
-      <div className="contain">
-        <h3> Repositories List </h3>
-        {this.props.repoInfo.map((repos,index) =>(<Repository key={index} {...repos} />))}
+      <div className="panel panel-default">
+      <div className="panel-heading">Repositories List</div>
+      <div className="panel-body">
+        <div className="row center-items skill">
+          {this.props.repoInfo.map((repos,index) =>(
+            <Repository key={index} {...repos} />
+          ))}
+        </div>
+      </div>
       </div>
     );
   }
@@ -156,7 +170,7 @@ class Repository extends Component{
   }
   render(){
     return(
-      <div>
+      <div className="col-sm-2">
         <div>{this.props.name}</div>
         <div></div>
         

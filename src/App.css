@@ -40,7 +40,7 @@
 .box{
   display: inline-block;
   vertical-align: top;
-  margin: 10% 10px;
+  margin: 2px 5px;
 }
 .contain{
   border: 1px solid rgb(196, 4, 4);
@@ -49,4 +49,24 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+.skill {
+  margin: 15px;
+  padding: 10px;
+  text-align: center;
+}
+.skill > div {
+  height: 50px;
+  border: 1px solid #ccc;
+  margin: 5px 10px;
+  padding: 2px;
+  border-radius: 1px 15px;
+  display: grid;
+  align-content: center;
+  cursor: pointer;
+}
+.skill > div:hover{
+  background-color: rgb(192, 191, 191);
+  border: 1px solid rgb(30, 160, 211);
+  font-weight: bold;
 }
