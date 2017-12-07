@@ -53,8 +53,8 @@ class SearchBox extends Component{
   searchUser = (event) =>{
     event.preventDefault();
     console.log(this.state.username);
-    //let url=`https://api.github.com/search/users?q=${this.state.username}`;
-    let url="data/users.json";
+    let url=`https://api.github.com/search/users?q=${this.state.username}`;
+    //let url="data/users.json";
     axios.get(url)
       .then(resp =>{
         this.props.onSubmit(resp.data);
@@ -116,8 +116,8 @@ class UserProfile extends Component{
     super(props);
   }
   getRepo=()=>{
-    //let repo_url=this.props.repos_url;
-    let repo_url="data/repo.json";
+    let repo_url=this.props.repos_url;
+    //let repo_url="data/repo.json";
     this.props.getSelect(repo_url);
    
   }
