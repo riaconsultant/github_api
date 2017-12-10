@@ -48,7 +48,6 @@ class App extends Component {
 }
 // Search Box
 class SearchBox extends Component{
-  
   state = {username:""}
   searchUser = (event) =>{
     event.preventDefault();
@@ -83,8 +82,10 @@ class SearchBox extends Component{
 }
 // Search result panel
 class SearchResult extends Component{
+  class1="hide";
   constructor(props){
     super(props)
+    //props.class1="hide";
     //console.log(props);
   }
   getSelection=(url)=>{
@@ -92,17 +93,18 @@ class SearchResult extends Component{
      axios.get(url)
       .then(repos=>{
         //console.log(repos.data);
-        this.props.getReposEvt(repos.data)
+        this.props.getReposEvt(repos.data);
+        this.props.class1="show";
       })
   }
   render(){
     //let userInfo = this.props.userInfo |[];
     return(
-      <div className="panel panel-default">
+      
+      <div className="panel panel-default" className={this.props.class1}>
         <div className="panel-heading">Result</div>
         <div className="panel-body">
         {this.props.userInfo.map((user,index) => 
-        
           <UserProfile key={index} {...user} getSelect={this.getSelection}/>
         )}
         </div>
