@@ -82,10 +82,8 @@ class SearchBox extends Component{
 }
 // Search result panel
 class SearchResult extends Component{
-  class1="hide";
   constructor(props){
     super(props)
-    //props.class1="hide";
     //console.log(props);
   }
   getSelection=(url)=>{
@@ -94,14 +92,13 @@ class SearchResult extends Component{
       .then(repos=>{
         //console.log(repos.data);
         this.props.getReposEvt(repos.data);
-        this.props.class1="show";
       })
   }
   render(){
     //let userInfo = this.props.userInfo |[];
     return(
       
-      <div className="panel panel-default" className={this.props.class1}>
+      <div className="panel panel-default">
         <div className="panel-heading">Result</div>
         <div className="panel-body">
         {this.props.userInfo.map((user,index) => 
@@ -126,7 +123,7 @@ class UserProfile extends Component{
   render(){
     return(
       <a href="#" className="list-group-item" onClick={this.getRepo}>
-        <img src={this.props.avatar_url1} width="100px"/>
+        <img src={this.props.avatar_url} width="100px"/>
         <div className="box">
           <span>{this.props.login}</span> - <span>{this.props.id}</span><br/>
           <a href={this.props.html_url} target="_blank">Profile</a>
@@ -159,31 +156,33 @@ class RepositoryList extends Component{
 }
 
 class Repository extends Component{
-  state={langData:[]}
-  constructor(){
-    super();
+  state={
+    langData:[]
   }
-  getLanguage(){
-    axios.get(this.props.languages_url)
+  constructor(props){
+    super(props);
+  }
+  getLanguage(languageUrl){
+    //debugger;
+    axios.get(languageUrl)
       .then(langData =>{
-        this.setState({langData:langData});
+        this.setState({langData:langData.data});
+        console.log(this.state.langData);
       })
-    //console.log(this.props.languages_url);
   }
   render(){
     return(
-      <div className="col-sm-2">
+      <div className="col-sm-2" onClick={()=>{ this.getLanguage(this.props.languages_url)} }>
         <div>{this.props.name}</div>
-        <div></div>
-        
+        {/* <LanguageBox langData={this.state.langData}/> */}
       </div>
     );
   }
 }
 // Show Language and percentages
 class LanguageBox extends Component{
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     
   }
   percentCal = () =>{
@@ -191,7 +190,11 @@ class LanguageBox extends Component{
   }
   render(){
     return(
-      <div></div>
+      <div>
+      {this.props.langData.map((data,index)=>{
+        <span>{data[index]}</span>
+      })}
+      </div>
     );
   }
 }
