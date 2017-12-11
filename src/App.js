@@ -192,7 +192,7 @@ class LanguageBox extends Component{
     return(
       <div>
       {this.props.langData.map((data,index)=>{
-        <span>{data[index]}</span>
+        <div>{data[index]}</div>
       })}
       </div>
     );
